@@ -9,6 +9,7 @@ function startApp() {
     console.log("ordbogen frontend kører!");
     document.querySelector("#search-form").addEventListener("submit", searchWord);
     document.querySelector("#search-results").classList.add("hidden")
+    document.querySelector("#search-results-none").classList.add("hidden")
 }
 
 async function searchWord(e) {
@@ -26,7 +27,10 @@ async function searchWord(e) {
     
     if (searchResult.result === -1 || searchResult.result === undefined) {
         console.log("Could not find word.. ")
+        document.querySelector("#search-results").classList.add("hidden")
+        document.querySelector("#search-results-none").classList.remove("hidden")
     } else {
+        document.querySelector("#search-results-none").classList.add("hidden")
         document.querySelector("#search-results").classList.remove("hidden")
         document.querySelector("#result-inflected").textContent = searchResult.result.inflected;
         document.querySelector("#result-headword").textContent = searchResult.result.headword;
