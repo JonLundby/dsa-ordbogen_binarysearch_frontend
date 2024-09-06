@@ -14,6 +14,16 @@
         <input type="text" id="searchWord" placeholder="Indtast søgeord">
         <button type="submit">søg</button>
     </form>
+
+    <section id="search-results">
+        <h3>Search result:</h3>
+        <!-- inflected, headword, partofspeech(ordklasse), homograf, id -->
+        <p>Bøjningsform: <span id="result-inflected"></span></p>
+        <p>Opslagsord: <span id="result-headword"></span></p>
+        <p>Ordklasse: <span id="result-partofspeech"></span></p>
+        <p>Homograf nr: <span id="result-homograf"></span></p>
+        <p>ID: <span id="result-id"></span></p>
+    </section>
     
 
     <script src="app.js" type="module"></script>

@@ -4,18 +4,24 @@ async function binarySearch(search, arrMin, arrMax, compFunc) {
     let min = arrMin;
     let max = arrMax; // skal være -1 fordi ellers mødes min og max aldrig (min & max bliver fx 10 & 11 og det resultere i et endless loop)
     let middle;
+    let count = 0;
 
     while (min <= max) {
+        count++;
         middle = Math.floor((max + min) / 2);
 
         let middleWord = await getMiddleWord(middle);
 
         let c = compFunc(search, middleWord.inflected.toLowerCase());
-        console.log(`minValue: ${min} \nmaxVal: ${max} \nmiddle(${middle}): ${middleWord}  equal with ${search}?\nc: ${c}`);
+        console.log(`minValue: ${min} 
+                    maxVal: ${max} 
+                    middle(${middle}): ${middleWord.inflected}  equal with ${search}?
+                    compare: ${c}
+                    serverrequests: ${count}`);
 
         if (c === 0) {
             // Hvis search value er lig med middle så returneres middle hvor middle er det index hvor search value er fundet
-            return middleWord;
+            return { result: middleWord, count };
         }
         if (c > 0) {
             // hvis search value er højere end middle så skal middle være ny minimum value
@@ -26,7 +32,7 @@ async function binarySearch(search, arrMin, arrMax, compFunc) {
             max = middle - 1;
         }
     }
-    return -1; // returner negativ tal når search value ikke findes i arrayet
+    return { result: -1, count }; // returner negativ tal når search value ikke findes i arrayet
 }
 
 function compare(a, b) {
