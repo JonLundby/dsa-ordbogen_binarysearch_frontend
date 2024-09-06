@@ -1,8 +1,9 @@
 "use strict";
 
-window.addEventListener("load", startApp);
+import { binarySearch, stringCompareFunction } from "./binarySearch.js";
+import { getInterval } from "./rest.js";
 
-const endpoint = `http://localhost:8080/ordbogen`;
+window.addEventListener("load", startApp);
 
 function startApp() {
     console.log("ordbogen frontend kører!");
@@ -14,7 +15,17 @@ async function searchWord(e) {
 
     const form = e.target;
     const word = form.searchWord.value.toLowerCase();
-    console.log(word);
 
+    const interval = await getInterval();
+    const min = interval.min;
+    const max = interval.max;
+
+    let wordFound = await binarySearch(word, min, max, stringCompareFunction);
+    console.log(wordFound)
+    
+    if (indexFound >= 0) {
+        console.log("word found: " + wordFound)
+    } else {
+        console.log("Could not find word.. ")
+    }
 }
-
