@@ -15,7 +15,7 @@ async function searchWord(e) {
     e.preventDefault();
 
     const form = e.target;
-    const word = form.searchWord.value.toLowerCase();
+    const word = normalizeWord(form.searchWord.value);
 
     const interval = await getInterval();
     const min = interval.min;
@@ -46,3 +46,18 @@ async function searchWord(e) {
         console.log(searchResult);
     }
 }
+
+function normalizeWord(word) {
+    let wordNormalized = word
+        .toLowerCase()
+        .replace(/[\u2080-\u2089]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 8272));
+    // "/[\u2080-\u2089]/g" - det interval af unicode chars der skal skiftes ud. Regular expression - en måde at definere et string mønster
+    // "m" - den matchede værdi sendes som parameter.
+    // "m.charCodeAt(0)" - finder den unicode værdi/unicode code point som index 0 af m har. fx hvis m er ₂ så returneres unicode 8322
+    // "- 8272" - 8272 trækkes fra fordi det er afstanden fra unicode code point(2) til (₂)
+    // "String.fromCharCode(...)" - det fundne unicode code point konverteres til tilsvarende string character
+
+    return wordNormalized;
+}
+
+export { normalizeWord };

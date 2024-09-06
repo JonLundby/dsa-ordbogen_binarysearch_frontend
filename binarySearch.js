@@ -1,4 +1,5 @@
 import { getMiddleWord } from "./rest.js";
+import { normalizeWord } from "./app.js";
 
 async function binarySearch(search, arrMin, arrMax, compFunc) {
     let min = arrMin;
@@ -12,8 +13,9 @@ async function binarySearch(search, arrMin, arrMax, compFunc) {
         middle = Math.floor((max + min) / 2);
 
         let middleWord = await getMiddleWord(middle);
+        let middleWordNormalized = normalizeWord(middleWord.inflected)
 
-        let c = compFunc(search, middleWord.inflected.toLowerCase());
+        let c = compFunc(search, middleWordNormalized);   
         console.log(
             `-minValue: ${min}\n-maxVal: ${max}\n-middle(${middle}): ${middleWord.inflected}  equal with ${search}?\n-compare: ${c}\n-serverrequests: ${count}`
         );
@@ -38,7 +40,8 @@ async function binarySearch(search, arrMin, arrMax, compFunc) {
 
 function stringCompareFunction(a, b) {
     console.log("comparing: " + a + " and " + b);
-    return a.localeCompare(b, "da-DK");
+    let bNormalized = b.replace(/[\u2080-\u2089]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 8272));
+    return a.localeCompare(bNormalized, "da-DK");
 }
 
 // NOT USED IN THIS EXERCISE
